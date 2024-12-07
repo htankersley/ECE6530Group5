@@ -1,11 +1,21 @@
 # ECE6540Group5
 Perceptual Frequency Response: Musical Illusion and Hearing Test
 
+## P6 - Shepherd Tone
 
-## P11 - Frequency Response
+To run P6:
+1. Download `Lab_P_6.m`, `PreLab_P_6.m`, and `key2note.m` from the "P6" folder of this repository
+2. Save the files in the same folder
+3. Open `PreLab_P_6.m` in MATLAB and press "Run" to observe filtering with the gaussian function
+4. Open `Lab_P_6.m` in MATLAB and press "Run" to observe the Shepherd's Tone
+
+After running `Lab_P_6.m`, several .wav files will be generated. Listen to `sequence.wav` and `filtered_sequence.wav` to hear the unfiltered and filtered major scale Shepherd's Tone. Listen to `chromatic.wav` and `filtered_chrom.wav` to hear the unfiltered and filtered chromatic scale Shepherd's Tone.
+
+
+## P11 - Hearing Test
 
 To run P11:
-1. Download `P11_hearing_test.m` and `hearing_test_func.m` from the "P11" Folder of this repository
+1. Download `P11_hearing_test.m` and `hearing_test_func.m` from the "P11" folder of this repository
 2. Save the files in the same folder
 3. Open `P11_hearing_test.m` in MATLAB and press "Run"
 
