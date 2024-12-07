@@ -1,0 +1,396 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>hearing_test_func</title><meta name="generator" content="MATLAB 9.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2024-12-06"><meta name="DC.source" content="hearing_test_func.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="comment">% This function serves as a hearing test, returning a plot showing</span>
+<span class="comment">% frequency [Hz] versus amplitude threshold at which that frequency becomes</span>
+<span class="comment">% audible [dB].</span>
+
+<span class="comment">% Function requires two inputs:</span>
+<span class="comment">% sampling rate: the rate at which each sound signal is sampled</span>
+<span class="comment">% duration: the time duration [s] for which each sound signal is played</span>
+
+<span class="comment">% After running the function (from P11_hearing_test.m or through your own</span>
+<span class="comment">% file), the test expects a key-press to initiate the test. During the</span>
+<span class="comment">% test, the user will be prompted to enter 'y' if they can hear the tone,</span>
+<span class="comment">% 'n' if they can not hear the tone, or 'q' if they wish to end the test</span>
+<span class="comment">% and view results. There is no minimum number of frequencies, but the more you</span>
+<span class="comment">% do, the more useful and accurate the results will be.</span>
+
+<span class="comment">% This test should be completed with headphones for best results. Check the</span>
+<span class="comment">% frequency response of your headphones to see if any frequencies have low</span>
+<span class="comment">% amplitude response, as this will affect your test results. The initial</span>
+<span class="comment">% amplitude is set low to reduce risk of hearing damage, but you should</span>
+<span class="comment">% still test your volume before taking the test to make sure it isn't too</span>
+<span class="comment">% high. Once you start your test, keep your system / headphone volume set</span>
+<span class="comment">% to a constant level to avoid messing up the test results.</span>
+
+<span class="keyword">function</span> hearing_test_func(samplingRate, duration)
+
+    <span class="comment">% We chose a threshold frequency of 600 Hz to match the frequency response</span>
+    <span class="comment">% graphs found for airpod pros 2nd generation headphone:</span>
+    <span class="comment">% https://www.rtings.com/headphones/reviews/apple/airpods-pro-2nd-generation-truly-wireless</span>
+    frequency = 600;
+
+    <span class="comment">% The initial amplitude is chosen to be approximately the hearing</span>
+    <span class="comment">% threshold at 600 Hz</span>
+    init_amplitude = 0.0001;
+
+    <span class="comment">% Typical human hearing range</span>
+    frequency_range = [20, 8000];
+
+    <span class="comment">% Variable initiation for tracking amplitude and frequency</span>
+    amplitude = init_amplitude;
+    frequency_log = [];
+    amplitude_log = [];
+
+
+    <span class="comment">% Variable initiation for managing increasing/decreasing of amplitude (always</span>
+    <span class="comment">% starting with increasing)</span>
+    increasing = 1;
+    increasing_amp = 0;
+
+    <span class="comment">% Print test instructions</span>
+    fprintf(<span class="string">'Instructions:\n'</span>);
+    fprintf(<span class="string">'Press any key to start the test.\n'</span>);
+    fprintf(<span class="string">'Press "y" if you hear the tone.\n'</span>);
+    fprintf(<span class="string">'Press "n" if you do not hear the tone.\n'</span>);
+    fprintf(<span class="string">'Press "q" to quit.\n\n'</span>);
+
+    <span class="comment">% Wait</span>
+    pause;
+    fprintf(<span class="string">'Test started.\n\n'</span>);
+
+    <span class="comment">% The test cycles through several randomized frequencies within the given</span>
+    <span class="comment">% range. The test checks increasing and then decreasing amplitudes for the same frequency, and then</span>
+    <span class="comment">% averages the two results to get a more accurate value. When the user</span>
+    <span class="comment">% has completed both tests for a given frequency, the test moves on to</span>
+    <span class="comment">% the next randomized frequency until the user enters 'q' to stop the</span>
+    <span class="comment">% test.</span>
+    <span class="keyword">while</span> true
+
+        <span class="comment">% Use the sampling rate, duration, frequency, and amplitude to</span>
+        <span class="comment">% generate a cosine wave representing a sound wave</span>
+        tt = 0:1/samplingRate:duration;
+        xx = amplitude * cos(2 * pi * frequency * tt);
+
+        <span class="comment">% Play the sound for the given duration</span>
+        sound(xx, samplingRate);
+        pause(duration);
+
+        <span class="comment">% Request user input to find out if the user heard the tone</span>
+        response = input(<span class="string">'Did you hear the tone? ("y" = yes, "n" = no, "q" = quit): '</span>, <span class="string">'s'</span>);
+
+        <span class="comment">%Collect amplitude data for increasing and decreasing amplitudes</span>
+        <span class="keyword">if</span> strcmp(response, <span class="string">'y'</span>) <span class="comment">% The tone was heard</span>
+            fprintf(<span class="string">'The tone was at %.2f Hz\n'</span>, frequency);
+            fprintf(<span class="string">'The amplitude was at %.4f \n'</span>, amplitude);
+
+            <span class="comment">% If we have been increasing the frequency and hear the tone, save the increasing</span>
+            <span class="comment">% amplitude, and then switch to decreasing the frequency</span>
+            <span class="comment">% (indicated by increasing = 0)</span>
+            <span class="keyword">if</span> increasing == 1
+                increasing_amp = amplitude; <span class="comment">% Save the increasing amplitude</span>
+                increasing = 0; <span class="comment">% Switch to decrease mode</span>
+
+            <span class="comment">% If we have been decreasing and hear the tone, continue</span>
+            <span class="comment">% decreasing until the tone is no longer heard</span>
+            <span class="keyword">else</span>
+                <span class="comment">% Decrease by 10% - we decrease less than we increase to get</span>
+                <span class="comment">% a more precise value</span>
+                amplitude = amplitude - 0.1*amplitude;
+            <span class="keyword">end</span>
+
+        <span class="keyword">elseif</span> strcmp(response, <span class="string">'n'</span>) <span class="comment">% The tone was not heard</span>
+            fprintf(<span class="string">'The tone was at %.2f Hz\n'</span>, frequency);
+            fprintf(<span class="string">'The amplitude was at %.4f \n'</span>, amplitude);
+
+            <span class="comment">% If we are increasing and don't hear the tone, continue</span>
+            <span class="comment">% increasing until the tone is heard</span>
+            <span class="keyword">if</span> increasing == 1
+                <span class="comment">% Increase amplitude by 50%</span>
+                amplitude = amplitude + 0.5*amplitude;
+
+            <span class="comment">% If we have been decreasing the frequency, log the frequency,</span>
+            <span class="comment">% log the average of the increasing and current amplitude, and</span>
+            <span class="comment">% then reset the test to test a new frequency</span>
+            <span class="keyword">else</span>
+                <span class="comment">%Save the frequency and the average of the increasing and</span>
+                <span class="comment">%decreasing amplitudes:</span>
+                frequency_log(end+1) = frequency;
+                amplitude_log(end+1) = (increasing_amp + amplitude)/2;
+
+                <span class="comment">% Reset to repeat for new frequency</span>
+                increasing = 1;
+                increasing_amp = 0;
+                amplitude = init_amplitude;
+                frequency = randi(frequency_range); <span class="comment">% Random new frequency</span>
+            <span class="keyword">end</span>
+        <span class="keyword">elseif</span> strcmp(response, <span class="string">'q'</span>) <span class="comment">% The user is ending the test</span>
+            fprintf(<span class="string">'Test completed.\n'</span>);
+            <span class="keyword">break</span>;
+        <span class="keyword">else</span> <span class="comment">% Invalid input</span>
+            fprintf(<span class="string">'Invalid input. Please enter "y", "n", or "q".\n'</span>);
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+    <span class="comment">% Find the logged amplitudes in dB</span>
+    amplitude_db = 20.*log10(amplitude_log);
+
+    <span class="comment">% Calculate the dB value of the initial amplitude - remember that the</span>
+    <span class="comment">% initial amplitude is also the estimated threshold of hearing for our</span>
+    <span class="comment">% threshold frequency of 600 Hz</span>
+    threshold_offset = 20.*log10(init_amplitude);
+
+    <span class="comment">% Find the relative dBr amplitude values (this gives us a base line of</span>
+    <span class="comment">% zero)</span>
+
+    amplitude_dbr = amplitude_db - threshold_offset;
+
+    <span class="comment">% Plot the dBr amplitude versus logarithmic frequency to show results</span>
+    <span class="comment">% of hearing test</span>
+    figure(1);
+    semilogx(frequency_log, amplitude_dbr, <span class="string">'.'</span>, <span class="string">'MarkerSize'</span>, 30);
+    xlabel(<span class="string">'Frequency (Hz)'</span>);
+    ylabel(<span class="string">'Amplitude Response(Relative dB))'</span>);
+    title(<span class="string">'Hearing Test Results'</span>);
+    subtitle(<span class="string">'dB Offset = -80'</span>)
+    grid <span class="string">on</span>;
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">Instructions:
+Press any key to start the test.
+Press "y" if you hear the tone.
+Press "n" if you do not hear the tone.
+Press "q" to quit.
+
+Test started.
+
+</pre><pre class="codeoutput error">Not enough input arguments.
+
+Error in hearing_test_func (line 70)
+        tt = 0:1/samplingRate:duration;
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+% This function serves as a hearing test, returning a plot showing
+% frequency [Hz] versus amplitude threshold at which that frequency becomes
+% audible [dB]. 
+
+% Function requires two inputs: 
+% sampling rate: the rate at which each sound signal is sampled
+% duration: the time duration [s] for which each sound signal is played
+
+% After running the function (from P11_hearing_test.m or through your own
+% file), the test expects a key-press to initiate the test. During the
+% test, the user will be prompted to enter 'y' if they can hear the tone,
+% 'n' if they can not hear the tone, or 'q' if they wish to end the test
+% and view results. There is no minimum number of frequencies, but the more you
+% do, the more useful and accurate the results will be.
+
+% This test should be completed with headphones for best results. Check the
+% frequency response of your headphones to see if any frequencies have low
+% amplitude response, as this will affect your test results. The initial
+% amplitude is set low to reduce risk of hearing damage, but you should
+% still test your volume before taking the test to make sure it isn't too
+% high. Once you start your test, keep your system / headphone volume set
+% to a constant level to avoid messing up the test results.
+
+function hearing_test_func(samplingRate, duration)
+    
+    % We chose a threshold frequency of 600 Hz to match the frequency response
+    % graphs found for airpod pros 2nd generation headphone:
+    % https://www.rtings.com/headphones/reviews/apple/airpods-pro-2nd-generation-truly-wireless
+    frequency = 600;
+
+    % The initial amplitude is chosen to be approximately the hearing
+    % threshold at 600 Hz
+    init_amplitude = 0.0001; 
+
+    % Typical human hearing range
+    frequency_range = [20, 8000];
+
+    % Variable initiation for tracking amplitude and frequency
+    amplitude = init_amplitude;
+    frequency_log = [];
+    amplitude_log = [];
+     
+
+    % Variable initiation for managing increasing/decreasing of amplitude (always
+    % starting with increasing)
+    increasing = 1;
+    increasing_amp = 0;
+
+    % Print test instructions
+    fprintf('Instructions:\n');
+    fprintf('Press any key to start the test.\n');
+    fprintf('Press "y" if you hear the tone.\n');
+    fprintf('Press "n" if you do not hear the tone.\n');
+    fprintf('Press "q" to quit.\n\n');
+    
+    % Wait
+    pause;
+    fprintf('Test started.\n\n');
+
+    % The test cycles through several randomized frequencies within the given
+    % range. The test checks increasing and then decreasing amplitudes for the same frequency, and then
+    % averages the two results to get a more accurate value. When the user
+    % has completed both tests for a given frequency, the test moves on to
+    % the next randomized frequency until the user enters 'q' to stop the
+    % test.
+    while true
+
+        % Use the sampling rate, duration, frequency, and amplitude to
+        % generate a cosine wave representing a sound wave
+        tt = 0:1/samplingRate:duration;
+        xx = amplitude * cos(2 * pi * frequency * tt);
+
+        % Play the sound for the given duration
+        sound(xx, samplingRate);
+        pause(duration);
+
+        % Request user input to find out if the user heard the tone
+        response = input('Did you hear the tone? ("y" = yes, "n" = no, "q" = quit): ', 's');
+
+        %Collect amplitude data for increasing and decreasing amplitudes
+        if strcmp(response, 'y') % The tone was heard
+            fprintf('The tone was at %.2f Hz\n', frequency);
+            fprintf('The amplitude was at %.4f \n', amplitude);
+
+            % If we have been increasing the frequency and hear the tone, save the increasing
+            % amplitude, and then switch to decreasing the frequency
+            % (indicated by increasing = 0)
+            if increasing == 1
+                increasing_amp = amplitude; % Save the increasing amplitude
+                increasing = 0; % Switch to decrease mode
+
+            % If we have been decreasing and hear the tone, continue
+            % decreasing until the tone is no longer heard
+            else
+                % Decrease by 10% - we decrease less than we increase to get
+                % a more precise value
+                amplitude = amplitude - 0.1*amplitude; 
+            end  
+            
+        elseif strcmp(response, 'n') % The tone was not heard
+            fprintf('The tone was at %.2f Hz\n', frequency);
+            fprintf('The amplitude was at %.4f \n', amplitude);
+            
+            % If we are increasing and don't hear the tone, continue
+            % increasing until the tone is heard
+            if increasing == 1
+                % Increase amplitude by 50%
+                amplitude = amplitude + 0.5*amplitude;
+
+            % If we have been decreasing the frequency, log the frequency,
+            % log the average of the increasing and current amplitude, and
+            % then reset the test to test a new frequency
+            else
+                %Save the frequency and the average of the increasing and
+                %decreasing amplitudes:
+                frequency_log(end+1) = frequency;
+                amplitude_log(end+1) = (increasing_amp + amplitude)/2;
+
+                % Reset to repeat for new frequency
+                increasing = 1;
+                increasing_amp = 0;
+                amplitude = init_amplitude;
+                frequency = randi(frequency_range); % Random new frequency
+            end      
+        elseif strcmp(response, 'q') % The user is ending the test
+            fprintf('Test completed.\n');
+            break;
+        else % Invalid input
+            fprintf('Invalid input. Please enter "y", "n", or "q".\n');
+        end
+    end
+    
+    % Find the logged amplitudes in dB
+    amplitude_db = 20.*log10(amplitude_log);
+
+    % Calculate the dB value of the initial amplitude - remember that the
+    % initial amplitude is also the estimated threshold of hearing for our
+    % threshold frequency of 600 Hz
+    threshold_offset = 20.*log10(init_amplitude);
+
+    % Find the relative dBr amplitude values (this gives us a base line of
+    % zero)
+
+    amplitude_dbr = amplitude_db - threshold_offset;
+    
+    % Plot the dBr amplitude versus logarithmic frequency to show results
+    % of hearing test
+    figure(1);
+    semilogx(frequency_log, amplitude_dbr, '.', 'MarkerSize', 30);
+    xlabel('Frequency (Hz)');
+    ylabel('Amplitude Response(Relative dB))');
+    title('Hearing Test Results');
+    subtitle('dB Offset = -80')
+    grid on;
+end
+
+##### SOURCE END #####
+--></body></html>

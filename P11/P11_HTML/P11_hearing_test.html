@@ -75,7 +75,19 @@ duration = 1; <span class="comment">% sec</span>
 
 <span class="comment">% Run test - check hearing_test.m for detailed test notes.</span>
 hearing_test_func(samplingRate, duration);
-</pre><pre class="codeoutput error">Undefined function 'hearing_test_func' for input arguments of type 'double'.
+</pre><pre class="codeoutput">Instructions:
+Press any key to start the test.
+Press "y" if you hear the tone.
+Press "n" if you do not hear the tone.
+Press "q" to quit.
+
+Test started.
+
+</pre><pre class="codeoutput error">Error using input
+Cannot call INPUT from EVALC.
+
+Error in hearing_test_func (line 78)
+        response = input('Did you hear the tone? ("y" = yes, "n" = no, "q" = quit): ', 's');
 
 Error in P11_hearing_test (line 12)
 hearing_test_func(samplingRate, duration);
