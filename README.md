@@ -9,7 +9,9 @@ To run P6:
 3. Open `PreLab_P_6.m` in MATLAB and press "Run" to observe filtering with the gaussian function
 4. Open `Lab_P_6.m` in MATLAB and press "Run" to observe the Shepherd's Tone
 
-After running `Lab_P_6.m`, several .wav files will be generated. Listen to `sequence.wav` and `filtered_sequence.wav` to hear the unfiltered and filtered major scale Shepherd's Tone. Listen to `chromatic.wav` and `filtered_chrom.wav` to hear the unfiltered and filtered chromatic scale Shepherd's Tone.
+After running `Lab_P_6.m`, several .wav files will be generated. Listen to `sequence.wav` and `filtered_sequence.wav` to hear the unfiltered and filtered major scale Shepherd's Tone. Listen to `chromatic.wav` and `filtered_chrom.wav` to hear the unfiltered and filtered chromatic scale Shepherd's Tone. The other .wav files represent specific notes on the scales.
+
+You can also find the .wav files under the "P6/P6_Audio_Files" folder of this repository.
 
 
 ## P11 - Hearing Test
