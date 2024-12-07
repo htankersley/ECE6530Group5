@@ -13,6 +13,8 @@ After running `Lab_P_6.m`, several .wav files will be generated. Listen to `sequ
 
 You can also find the .wav files under the "P6/P6_Audio_Files" folder of this repository.
 
+To view implementation details, look at the comments in the .m files, or view the html files under the "P6/P6_HTML" folder.
+
 
 ## P11 - Hearing Test
 
